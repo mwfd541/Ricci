@@ -7,8 +7,8 @@ np.seterr(all="print")  # divide='raise', invalid='raise')
 #
 #   simulation parameters
 #
-runs = 10000  # how many iterations
-show = 1000  # how frequently we show the result
+runs = 200  # how many iterations
+show = 100  # how frequently we show the result
 eta = 0.0002  # factor of Ricci that is added to distance squared
 # 'min' rescales the distance squared function so minimum is 1.
 # 'L1' rescales it so the sum of distance squared stays the same
@@ -19,6 +19,8 @@ noise = 0.2  # noise coefficient
 CLIP = 60  # value at which we clip distance function
 
 
+np.set_printoptions(precision=2,suppress = True)
+
 import data
 from tools import metricize
 from Laplacian import Laplacian
@@ -27,9 +29,12 @@ from Ricci import coarseRicci
 
 # sqdist = data.onedimensionpair(2, 3, noise)
 # sqdist = data.cyclegraph(6, noise)
-sqdist = data.closefarsimplices(3, 0.1, 3)
+#sqdist = data.closefarsimplices(3, 0.1, 3)
+
+sqdist, pointset = data.twodimensionpair(5,5,noise)
 
 sqdist = metricize(sqdist)
+idist=sqdist
 L = Laplacian(sqdist, t)
 Ricci = coarseRicci(L, sqdist)
 
@@ -73,3 +78,13 @@ for i in range(runs + show + 3):
         # print Ricci
         # print Ricci/dist, '<- Ricc/dist'
         print '---------'
+
+
+print 'original '
+print idist
+
+print 'original '
+print idist
+plt.scatter(pointset[:,0], pointset[:,1])
+plt.axis('equal')
+plt.show()
